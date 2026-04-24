@@ -16,21 +16,7 @@ function scrollTo(id: string) {
 
       <div class="footer__brand">
         <div class="footer__logo">
-          <svg viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 8 C24 8 23 16 18 21" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round"/>
-            <path d="M24 10 C24 10 28 17 33 21" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round"/>
-            <line x1="18" y1="21" x2="16.5" y2="27" stroke="#5C3D2E" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="33" y1="21" x2="33.5" y2="27" stroke="#5C3D2E" stroke-width="1.8" stroke-linecap="round"/>
-            <circle cx="16" cy="36" r="9" fill="#9B2335"/>
-            <circle cx="34" cy="36" r="9" fill="#9B2335"/>
-            <circle cx="13.5" cy="33" r="2.5" fill="rgba(255,255,255,0.25)"/>
-            <circle cx="31.5" cy="33" r="2.5" fill="rgba(255,255,255,0.25)"/>
-            <path d="M24 8 C21 2, 13 3, 14 8 C17 14, 24 10, 24 8Z" fill="#2A4D14"/>
-          </svg>
-          <div>
-            <div class="footer__logo-abbr">ZP</div>
-            <div class="footer__logo-name">Dilyan Velev</div>
-          </div>
+          <img src="/logo.png" alt="ЗП Дилян Велев" class="footer__logo-img" />
         </div>
         <p class="footer__tagline">{{ tr.footer.tagline }}</p>
       </div>
@@ -96,15 +82,15 @@ function scrollTo(id: string) {
 }
 
 .footer__logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin-bottom: 18px;
 }
 
-.footer__logo svg { width: 32px; height: 38px; flex-shrink: 0; }
-.footer__logo-abbr { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: #fff; }
-.footer__logo-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.50); }
+.footer__logo-img {
+  height: 80px;
+  width: auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
 
 .footer__tagline {
   font-size: 14px;

@@ -36,21 +36,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <div class="container header__inner">
 
       <a href="#home" class="header__logo" @click.prevent="scrollTo('home')">
-        <svg class="header__logo-mark" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 8 C24 8 23 16 18 21" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round"/>
-          <path d="M24 10 C24 10 28 17 33 21" stroke="#5C3D2E" stroke-width="2" stroke-linecap="round"/>
-          <line x1="18" y1="21" x2="16.5" y2="27" stroke="#5C3D2E" stroke-width="1.8" stroke-linecap="round"/>
-          <line x1="33" y1="21" x2="33.5" y2="27" stroke="#5C3D2E" stroke-width="1.8" stroke-linecap="round"/>
-          <circle cx="16" cy="36" r="9" fill="#9B2335"/>
-          <circle cx="34" cy="36" r="9" fill="#9B2335"/>
-          <circle cx="13.5" cy="33" r="2.5" fill="rgba(255,255,255,0.25)"/>
-          <circle cx="31.5" cy="33" r="2.5" fill="rgba(255,255,255,0.25)"/>
-          <path d="M24 8 C21 2, 13 3, 14 8 C17 14, 24 10, 24 8Z" fill="#2A4D14"/>
-        </svg>
-        <span class="header__logo-text">
-          <span class="header__logo-abbr">ZP</span>
-          <span class="header__logo-name">Dilyan Velev</span>
-        </span>
+        <img src="/logo.png" alt="ЗП Дилян Велев" class="header__logo-img" />
       </a>
 
       <nav class="header__nav" aria-label="Main navigation">
@@ -136,41 +122,18 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .header__logo {
   display: flex;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
 }
 
-.header__logo-mark {
-  width: 32px;
-  height: 38px;
-  flex-shrink: 0;
+.header__logo-img {
+  height: 52px;
+  width: auto;
+  border-radius: 10px;
+  object-fit: contain;
+  transition: opacity 0.2s;
 }
 
-.header__logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-
-.header__logo-abbr {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--color-cherry);
-  transition: color 0.3s;
-}
-
-.header__logo-name {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  color: var(--color-text);
-  transition: color 0.3s;
-}
-
-.header:not(.header--scrolled) .header__logo-abbr  { color: rgba(255,255,255,0.95); }
-.header:not(.header--scrolled) .header__logo-name  { color: rgba(255,255,255,0.70); }
+.header__logo:hover .header__logo-img { opacity: 0.85; }
 
 /* ── Desktop nav ── */
 .header__nav {
