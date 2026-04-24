@@ -113,7 +113,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 
 .header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 20px;
 }
@@ -126,7 +127,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 
 .header__logo-img {
-  height: 52px;
+  height: 78px;
   width: auto;
   border-radius: 10px;
   object-fit: contain;
@@ -140,7 +141,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-left: auto;
+  justify-content: center;
 }
 
 .header__nav-link {
@@ -165,6 +166,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .header__controls {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
   flex-shrink: 0;
 }

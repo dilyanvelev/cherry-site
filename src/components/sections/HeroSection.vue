@@ -59,12 +59,6 @@ function scrollTo(id: string) {
 
     </div>
 
-    <div class="hero__scroll-hint" aria-hidden="true" @click="scrollTo('about')">
-      <div class="hero__scroll-line"></div>
-      <span>{{ tr.hero.scroll }}</span>
-    </div>
-
-    <div class="hero__fade" aria-hidden="true"></div>
   </section>
 </template>
 
@@ -98,7 +92,7 @@ function scrollTo(id: string) {
   z-index: 2;
   padding-top: calc(var(--header-height) + 40px);
   padding-bottom: 100px;
-  max-width: 640px;
+  max-width: 780px;
 }
 
 .hero__badge {
@@ -108,7 +102,7 @@ function scrollTo(id: string) {
   padding: 6px 14px;
   border: 1px solid rgba(255,255,255,0.20);
   border-radius: 100px;
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.06em;
   color: rgba(255,255,255,0.70);
@@ -124,7 +118,7 @@ function scrollTo(id: string) {
 
 .hero__heading {
   font-family: var(--font-display);
-  font-size: clamp(52px, 7vw, 88px);
+  font-size: clamp(64px, 8.5vw, 110px);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.02em;
@@ -138,7 +132,7 @@ function scrollTo(id: string) {
 }
 
 .hero__sub {
-  font-size: clamp(15px, 1.8vw, 17px);
+  font-size: clamp(17px, 2vw, 20px);
   color: rgba(255,255,255,0.60);
   line-height: 1.75;
   max-width: 460px;
@@ -156,8 +150,8 @@ function scrollTo(id: string) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 28px;
-  font-size: 14.5px;
+  padding: 17px 34px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.02em;
   border-radius: var(--radius);
@@ -191,45 +185,6 @@ function scrollTo(id: string) {
   transform: translateY(-2px);
 }
 
-.hero__scroll-hint {
-  position: absolute;
-  bottom: 40px; left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.hero__scroll-line {
-  width: 1px; height: 52px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.50));
-  animation: scrollPulse 2.2s ease-in-out infinite;
-}
-
-.hero__scroll-hint span {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.40);
-}
-
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 1; }
-}
-
-.hero__fade {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, var(--color-warm-white));
-  pointer-events: none;
-  z-index: 1;
-}
 
 @media (max-width: 768px) {
   .hero__bg-art { width: 80%; right: -20%; opacity: 0.6; }
@@ -252,11 +207,10 @@ function scrollTo(id: string) {
 .hero__heading { animation: heroEnter  0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.30s both; }
 .hero__sub     { animation: heroEnter  0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.50s both; }
 .hero__actions { animation: heroEnter  0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both; }
-.hero__scroll-hint { animation: heroEnter 0.6s ease 1.1s both; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero__bg-art, .hero__badge, .hero__heading,
-  .hero__sub, .hero__actions, .hero__scroll-hint {
+  .hero__sub, .hero__actions {
     animation: none;
   }
 }

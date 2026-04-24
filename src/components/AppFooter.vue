@@ -86,7 +86,7 @@ function scrollTo(id: string) {
 }
 
 .footer__logo-img {
-  height: 80px;
+  height: 120px;
   width: auto;
   border-radius: 12px;
   object-fit: contain;
