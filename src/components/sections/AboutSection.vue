@@ -2,7 +2,7 @@
 import { useLocale } from "@/composables/useLocale"
 const { tr } = useLocale()
 
-const statValues = ["20+", "15", "4"]
+const statValues = ["20+", "15", "3"]
 </script>
 
 <template>

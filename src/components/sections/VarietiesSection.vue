@@ -25,23 +25,11 @@ const { tr } = useLocale()
           v-appear="i * 100"
           class="variety-card"
         >
-          <!-- Colored top panel -->
-          <div class="variety-card__top" :style="{ background: variety.color }">
+          <!-- Photo top panel -->
+          <div class="variety-card__top">
+            <img class="variety-card__photo" :src="variety.image" :alt="variety.name" />
+            <div class="variety-card__overlay"></div>
             <span class="variety-card__season-badge">{{ variety.season }}</span>
-
-            <!-- Cherry SVG illustration -->
-            <svg class="variety-card__cherry" viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M40 14 C40 14 38 28 30 35" stroke="rgba(255,255,255,0.55)" stroke-width="3" stroke-linecap="round"/>
-              <path d="M40 18 C40 18 46 30 54 35" stroke="rgba(255,255,255,0.55)" stroke-width="3" stroke-linecap="round"/>
-              <line x1="30" y1="35" x2="27" y2="46" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="54" y1="35" x2="55" y2="46" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="26" cy="62" r="16" fill="rgba(255,255,255,0.22)"/>
-              <circle cx="56" cy="62" r="16" fill="rgba(255,255,255,0.22)"/>
-              <circle cx="21" cy="57" r="4.5" fill="rgba(255,255,255,0.30)"/>
-              <circle cx="51" cy="57" r="4.5" fill="rgba(255,255,255,0.30)"/>
-              <path d="M40 14 C36 5, 26 6, 27 13 C29 20, 40 17, 40 14Z" fill="rgba(255,255,255,0.45)"/>
-            </svg>
-
             <div class="variety-card__caliber-badge">
               <span class="variety-card__caliber-label">{{ tr.varieties.caliberLabel }}</span>
               <span class="variety-card__caliber-value">{{ variety.caliber }}</span>
@@ -138,7 +126,7 @@ const { tr } = useLocale()
 /* ── Grid ── */
 .varieties__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
@@ -156,15 +144,29 @@ const { tr } = useLocale()
   box-shadow: var(--shadow-lg);
 }
 
-/* Top colored panel */
+/* Top photo panel */
 .variety-card__top {
   position: relative;
-  height: 200px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 20px;
+  height: 220px;
   overflow: hidden;
+}
+
+.variety-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.variety-card:hover .variety-card__photo {
+  transform: scale(1.05);
+}
+
+.variety-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.10) 50%, transparent 100%);
 }
 
 .variety-card__season-badge {
@@ -177,30 +179,22 @@ const { tr } = useLocale()
   letter-spacing: 0.10em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.90);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.30);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 100px;
   backdrop-filter: blur(4px);
 }
 
-.variety-card__cherry {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -56%);
-  width: 80px;
-  height: 96px;
-  opacity: 0.90;
-}
-
 .variety-card__caliber-badge {
-  position: relative;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.40);
   border: 1px solid rgba(255, 255, 255, 0.20);
   border-radius: var(--radius);
   padding: 8px 16px;
@@ -267,7 +261,7 @@ const { tr } = useLocale()
 }
 
 /* ── Responsive ── */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .varieties__grid {
     grid-template-columns: repeat(2, 1fr);
   }

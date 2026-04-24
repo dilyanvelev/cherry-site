@@ -4,6 +4,7 @@ import StatsStrip from '@/components/sections/StatsStrip.vue'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import VarietiesSection from '@/components/sections/VarietiesSection.vue'
 import OrchardsSection from '@/components/sections/OrchardsSection.vue'
+import JuiceSection from '@/components/sections/JuiceSection.vue'
 import ContactSection from '@/components/sections/ContactSection.vue'
 </script>
 
@@ -11,9 +12,10 @@ import ContactSection from '@/components/sections/ContactSection.vue'
   <main>
     <HeroSection />
     <StatsStrip />
+    <OrchardsSection />
     <AboutSection />
     <VarietiesSection />
-    <OrchardsSection />
+    <JuiceSection />
     <ContactSection />
   </main>
 </template>
