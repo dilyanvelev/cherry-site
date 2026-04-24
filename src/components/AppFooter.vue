@@ -32,14 +32,9 @@ function scrollTo(id: string) {
 
       <div class="footer__contact-col">
         <span class="footer__col-heading">{{ tr.footer.contactHeading }}</span>
-        <a href="mailto:contact@zpdilyanvelev.bg" class="footer__contact-link">contact@zpdilyanvelev.bg</a>
-        <a href="tel:+359000000000" class="footer__contact-link">+359 (0) 000 000 000</a>
+        <a href="mailto:dilyan.velev@protonmail.com" class="footer__contact-link">dilyan.velev@protonmail.com</a>
+        <a href="tel:+359894600985" class="footer__contact-link">+359 894 600 985</a>
         <p class="footer__contact-text">{{ tr.contact.locationValue }}</p>
-      </div>
-
-      <div class="footer__hours-col">
-        <span class="footer__col-heading">{{ tr.footer.hoursHeading }}</span>
-        <p class="footer__contact-text">{{ tr.footer.hoursValue }}</p>
         <a
           href="https://www.google.com/maps/search/Rakitnitsa,+Stara+Zagora,+Bulgaria"
           target="_blank"
@@ -75,7 +70,7 @@ function scrollTo(id: string) {
 
 .footer__inner {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr 1.2fr;
+  grid-template-columns: 2fr 1fr 1.5fr;
   gap: 48px;
   padding-top: 64px;
   padding-bottom: 56px;

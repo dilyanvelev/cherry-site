@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
+import emailjs from "@emailjs/browser"
 import { useLocale } from "@/composables/useLocale"
+
+const EMAILJS_SERVICE_ID = "service_bf6qy73"
+const EMAILJS_TEMPLATE_ID = "template_tl09mbv"
+const EMAILJS_PUBLIC_KEY = "lr_rk_mw1Tk6B2PUw"
 
 const { tr } = useLocale()
 
@@ -8,6 +13,7 @@ const form = reactive({ name: "", email: "", phone: "", message: "" })
 const errors = reactive({ name: "", email: "", message: "" })
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
+const submitError = ref("")
 
 function validate(): boolean {
     errors.name = form.name.trim() ? "" : tr.value.contact.errors.name
@@ -19,9 +25,25 @@ function validate(): boolean {
 async function submit() {
     if (!validate()) return
     isSubmitting.value = true
-    await new Promise((resolve) => setTimeout(resolve, 1400))
-    isSubmitting.value = false
-    isSubmitted.value = true
+    submitError.value = ""
+    try {
+        await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+                name: form.name,
+                email: form.email,
+                phone: form.phone || "—",
+                message: form.message,
+            },
+            EMAILJS_PUBLIC_KEY,
+        )
+        isSubmitted.value = true
+    } catch {
+        submitError.value = "Something went wrong. Please try again or email us directly."
+    } finally {
+        isSubmitting.value = false
+    }
 }
 
 function reset() {
@@ -32,6 +54,7 @@ function reset() {
     errors.name = ""
     errors.email = ""
     errors.message = ""
+    submitError.value = ""
     isSubmitted.value = false
 }
 </script>
@@ -78,7 +101,7 @@ function reset() {
                         </div>
                         <div>
                             <span class="contact__detail-label">{{ tr.contact.emailLabel }}</span>
-                            <a href="mailto:contact@zpdilyanvelev.bg" class="contact__detail-value contact__detail-value--link"> contact@zpdilyanvelev.bg </a>
+                            <a href="mailto:dilyan.velev@protonmail.com" class="contact__detail-value contact__detail-value--link">dilyan.velev@protonmail.com</a>
                         </div>
                     </li>
 
@@ -96,20 +119,7 @@ function reset() {
                         </div>
                         <div>
                             <span class="contact__detail-label">{{ tr.contact.phoneLabel }}</span>
-                            <a href="tel:+359000000000" class="contact__detail-value contact__detail-value--link"> +359 (0) 000 000 000 </a>
-                        </div>
-                    </li>
-
-                    <li class="contact__detail">
-                        <div class="contact__detail-icon">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="3" width="16" height="14" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="rgba(255,255,255,0.1)" />
-                                <path d="M2 7h16M6 3v4M14 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="contact__detail-label">{{ tr.contact.hoursLabel }}</span>
-                            <span class="contact__detail-value">{{ tr.contact.hoursValue }}</span>
+                            <a href="tel:+359894600985" class="contact__detail-value contact__detail-value--link">+359 894 600 985</a>
                         </div>
                     </li>
                 </ul>
@@ -165,6 +175,8 @@ function reset() {
                             <span v-if="errors.message" class="form-error" role="alert">{{ errors.message }}</span>
                         </div>
 
+                        <p v-if="submitError" class="form-send-error" role="alert">{{ submitError }}</p>
+
                         <button type="submit" class="form-submit" :disabled="isSubmitting">
                             <span v-if="isSubmitting" class="form-submit__spinner" aria-hidden="true"></span>
                             <span>{{ isSubmitting ? tr.contact.form.submitting : tr.contact.form.submit }}</span>
@@ -202,6 +214,16 @@ function reset() {
 </template>
 
 <style scoped>
+.form-send-error {
+    font-size: 13px;
+    color: #f87171;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.25);
+    border-radius: var(--radius);
+}
+
 .contact {
     padding: var(--section-padding) 0;
     background: radial-gradient(ellipse at 20% 50%, rgba(42, 77, 20, 0.25) 0%, transparent 60%), linear-gradient(160deg, #100c08 0%, #18090b 60%, #100a0a 100%);
