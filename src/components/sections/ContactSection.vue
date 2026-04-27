@@ -214,6 +214,47 @@ function reset() {
 </template>
 
 <style scoped>
+.contact__messaging {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.contact__msg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.contact__msg-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.contact__msg-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.contact__msg-btn--wa    { background: #25d366; color: #fff; }
+.contact__msg-btn--viber { background: #7360f2; color: #fff; }
+
+.contact__call-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color-cherry);
+    border-radius: var(--radius);
+    transition: background 0.2s, transform 0.15s;
+}
+
+.contact__call-cta svg { width: 18px; height: 18px; }
+.contact__call-cta:hover { background: var(--color-cherry-dark); transform: translateY(-1px); }
+
 .form-send-error {
     font-size: 13px;
     color: #f87171;

@@ -36,7 +36,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <div class="container header__inner">
 
       <a href="#home" class="header__logo" @click.prevent="scrollTo('home')">
-        <img src="/logo.png" alt="ЗП Дилян Велев" class="header__logo-img" />
+        <img src="/logo_2.0.png" alt="ЗП Дилян Велев" class="header__logo-img" />
       </a>
 
       <nav class="header__nav" aria-label="Main navigation">

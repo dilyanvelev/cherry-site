@@ -56,6 +56,14 @@ const { tr } = useLocale()
         </article>
       </div>
 
+      <p v-appear="400" class="varieties__price-note">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M8 5v4m0 2v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        {{ tr.varieties.priceNote }}
+      </p>
+
     </div>
   </section>
 </template>
@@ -258,6 +266,24 @@ const { tr } = useLocale()
   font-size: 14px;
   line-height: 1.75;
   color: var(--color-text-muted);
+}
+
+.varieties__price-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.varieties__price-note svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--color-cherry);
+  opacity: 0.7;
 }
 
 /* ── Responsive ── */

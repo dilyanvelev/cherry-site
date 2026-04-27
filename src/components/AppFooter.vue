@@ -16,7 +16,7 @@ function scrollTo(id: string) {
 
       <div class="footer__brand">
         <div class="footer__logo">
-          <img src="/logo.png" alt="ЗП Дилян Велев" class="footer__logo-img" />
+          <img src="/logo_2.0.png" alt="ЗП Дилян Велев" class="footer__logo-img" />
         </div>
         <p class="footer__tagline">{{ tr.footer.tagline }}</p>
       </div>
