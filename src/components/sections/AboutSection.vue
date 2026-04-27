@@ -2,7 +2,7 @@
 import { useLocale } from "@/composables/useLocale"
 const { tr } = useLocale()
 
-const statValues = ["20+", "15", "3"]
+const statValues = ["15+", "4", "3"]
 </script>
 
 <template>
@@ -29,42 +29,7 @@ const statValues = ["20+", "15", "3"]
 
             <div v-appear="100" class="about__visual" aria-hidden="true">
                 <div class="about__card about__card--main">
-                    <svg class="about__tree" viewBox="0 0 260 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M130 340 L130 200" stroke="#5C3D2E" stroke-width="14" stroke-linecap="round" />
-                        <path d="M130 220 C110 190, 70 170, 50 140" stroke="#5C3D2E" stroke-width="8" stroke-linecap="round" />
-                        <path d="M130 220 C150 185, 185 165, 205 130" stroke="#5C3D2E" stroke-width="8" stroke-linecap="round" />
-                        <path d="M130 200 C130 160, 130 120, 130 90" stroke="#5C3D2E" stroke-width="6" stroke-linecap="round" />
-                        <path d="M50 140 C35 120, 25 100, 30 75" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round" />
-                        <path d="M50 140 C45 115, 60 95, 70 75" stroke="#5C3D2E" stroke-width="4" stroke-linecap="round" />
-                        <path d="M205 130 C215 108, 225 88, 220 65" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round" />
-                        <path d="M205 130 C195 105, 185 88, 192 65" stroke="#5C3D2E" stroke-width="4" stroke-linecap="round" />
-                        <path d="M130 90 C118 68, 115 48, 118 28" stroke="#5C3D2E" stroke-width="4" stroke-linecap="round" />
-                        <path d="M130 90 C142 68, 145 48, 142 28" stroke="#5C3D2E" stroke-width="4" stroke-linecap="round" />
-                        <ellipse cx="52" cy="60" rx="35" ry="30" fill="#2A4D14" opacity="0.85" />
-                        <ellipse cx="78" cy="45" rx="28" ry="24" fill="#3a6020" opacity="0.80" />
-                        <ellipse cx="210" cy="50" rx="35" ry="30" fill="#2A4D14" opacity="0.85" />
-                        <ellipse cx="186" cy="40" rx="28" ry="24" fill="#3a6020" opacity="0.80" />
-                        <ellipse cx="130" cy="20" rx="38" ry="32" fill="#2A4D14" opacity="0.90" />
-                        <ellipse cx="118" cy="12" rx="24" ry="20" fill="#3a6020" opacity="0.80" />
-                        <ellipse cx="142" cy="10" rx="24" ry="20" fill="#3a6020" opacity="0.75" />
-                        <circle cx="38" cy="78" r="7" fill="#9B2335" />
-                        <circle cx="56" cy="85" r="7" fill="#9B2335" />
-                        <circle cx="24" cy="92" r="7" fill="#7a1b28" />
-                        <circle cx="72" cy="62" r="6" fill="#9B2335" />
-                        <circle cx="84" cy="74" r="6" fill="#7a1b28" />
-                        <circle cx="218" cy="68" r="7" fill="#9B2335" />
-                        <circle cx="200" cy="76" r="7" fill="#9B2335" />
-                        <circle cx="228" cy="84" r="6" fill="#7a1b28" />
-                        <circle cx="192" cy="58" r="6" fill="#9B2335" />
-                        <circle cx="180" cy="70" r="6" fill="#7a1b28" />
-                        <circle cx="118" cy="30" r="7" fill="#9B2335" />
-                        <circle cx="136" cy="26" r="7" fill="#9B2335" />
-                        <circle cx="124" cy="44" r="6" fill="#7a1b28" />
-                        <circle cx="36" cy="76" r="2" fill="rgba(255,255,255,0.30)" />
-                        <circle cx="54" cy="83" r="2" fill="rgba(255,255,255,0.30)" />
-                        <circle cx="216" cy="66" r="2" fill="rgba(255,255,255,0.30)" />
-                        <circle cx="116" cy="28" r="2" fill="rgba(255,255,255,0.30)" />
-                    </svg>
+                    <img src="/gallery/garden.jpg" alt="Cherry garden" class="about__garden-img" />
                 </div>
 
                 <div class="about__card about__card--quote">
@@ -177,19 +142,16 @@ const statValues = ["20+", "15", "3"]
 }
 
 .about__card--main {
-    padding: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(145deg, #f5f0e5, #efe8d8);
     min-height: 340px;
+    overflow: hidden;
 }
 
-.about__tree {
+.about__garden-img {
     width: 100%;
-    max-width: 220px;
-    height: auto;
-    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.12));
+    height: 100%;
+    min-height: 340px;
+    object-fit: cover;
+    display: block;
 }
 
 .about__card--quote {
