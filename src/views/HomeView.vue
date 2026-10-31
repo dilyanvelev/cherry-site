@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HeroSection from "@/components/sections/HeroSection.vue"
-import StatsStrip from "@/components/sections/StatsStrip.vue"
+// import StatsStrip from "@/components/sections/StatsStrip.vue"
 import TrustSection from "@/components/sections/TrustSection.vue"
 // import OrchardsSection from "@/components/sections/OrchardsSection.vue"
 import AboutSection from "@/components/sections/AboutSection.vue"
@@ -14,7 +14,7 @@ import ContactSection from "@/components/sections/ContactSection.vue"
 <template>
     <main>
         <HeroSection />
-        <StatsStrip />
+        <!-- <StatsStrip /> -->
         <TrustSection />
         <!-- <OrchardsSection /> -->
         <AboutSection />

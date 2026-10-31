@@ -4,171 +4,174 @@ const { tr } = useLocale()
 </script>
 
 <template>
-  <section class="trust">
-    <div class="container trust__inner">
+  <section class="trust" aria-labelledby="trust-title">
+    <div class="trust__lead">
+      <p class="trust__kicker">{{ tr.trust.label }}</p>
+      <h2 id="trust-title" class="trust__title">
+        <span v-for="line in tr.trust.headingLines" :key="line" class="trust__title-line">{{ line }}{{ " " }}</span>
+      </h2>
 
-      <div class="trust__header">
-        <div v-appear class="section-label">{{ tr.trust.label }}</div>
-        <h2 v-appear="80" class="trust__heading">
-          {{ tr.trust.heading }}<br>
-          <em>{{ tr.trust.headingItalic }}</em>
-        </h2>
+      <!-- The usual chain with the middlemen struck out -->
+      <div class="route">
+        <p class="route__label">{{ tr.trust.routeLabel }}</p>
+        <ol class="route__steps">
+          <li v-for="item in tr.trust.route" :key="item.step" :class="['route__step', { 'route__step--cut': item.cut }]">
+            <del v-if="item.cut">{{ item.step }}</del>
+            <template v-else>{{ item.step }}</template>
+          </li>
+        </ol>
       </div>
-
-      <div class="trust__grid">
-        <div
-          v-for="(item, i) in tr.trust.items"
-          :key="i"
-          v-appear="i * 100"
-          class="trust__card"
-        >
-          <div class="trust__icon">
-            <!-- Farm / Direct -->
-            <svg v-if="item.icon === 'farm'" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 28V14l12-10 12 10v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="11" y="18" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M16 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="1.8"/>
-            </svg>
-            <!-- Fresh / Cherry -->
-            <svg v-else-if="item.icon === 'fresh'" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="10" cy="22" r="6" stroke="currentColor" stroke-width="1.8"/>
-              <circle cx="22" cy="22" r="6" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M16 8 C16 8 14 16 10 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M16 10 C16 10 20 16 22 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M16 8 C14 2 10 2 10 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-            <!-- Bulk / Box -->
-            <svg v-else-if="item.icon === 'bulk'" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 10l12-6 12 6v12l-12 6L4 22V10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              <path d="M16 4v24M4 10l12 6 12-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-            <!-- Delivery / Truck -->
-            <svg v-else-if="item.icon === 'delivery'" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="9" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.8"/>
-              <path d="M20 13h5l4 5v5h-9V13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              <circle cx="8" cy="25" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-              <circle cx="24" cy="25" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-            </svg>
-          </div>
-          <h3 class="trust__card-title">{{ item.title }}</h3>
-          <p class="trust__card-body">{{ item.body }}</p>
-        </div>
-      </div>
-
     </div>
+
+    <ul class="trust__list">
+      <li v-for="item in tr.trust.items" :key="item.title" class="trust__item">
+        <h3 class="trust__item-title">{{ item.title }}</h3>
+        <p class="trust__item-body">{{ item.body }}</p>
+      </li>
+    </ul>
   </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '@/design/tokens' as *;
+
+$paper-rule: 2px solid $etiket;
+
 .trust {
-  padding: var(--section-padding) 0;
-  background: var(--color-cream);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 48px 72px;
+  padding: 112px $gutter 120px;
+  font-family: $sans;
+  color: $etiket;
+  background: $burla;
+
+  @media (max-width: $bp-tablet) {
+    gap: 40px 48px;
+    padding: 88px $gutter-tablet 96px;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (max-width: $bp-phone) {
+    padding: 64px $gutter-phone 72px;
+  }
+
+  // Heading at the top, route pinned to the bottom edge of the ledger
+  &__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+    .route {
+      margin-top: auto;
+
+      @media (max-width: 900px) {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  &__kicker {
+    margin: 0;
+    @include mono-label;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $display;
+    font-weight: 900;
+    font-size: clamp(54px, 5.6vw, 92px);
+    line-height: 0.88;
+    letter-spacing: -0.005em;
+  }
+
+  &__title-line {
+    display: block;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: $paper-rule;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: baseline;
+    gap: 8px 32px;
+    padding: 24px 0 22px;
+    border-bottom: $paper-rule;
+
+    @media (max-width: $bp-phone) {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 20px 0 18px;
+    }
+  }
+
+  &__item-title {
+    margin: 0;
+    font-family: $display;
+    font-weight: 800;
+    font-size: clamp(28px, 2.4vw, 36px);
+    line-height: 1;
+  }
+
+  &__item-body {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.55;
+  }
 }
 
-.trust__inner {
+.route {
   display: flex;
   flex-direction: column;
-  gap: 48px;
-}
+  gap: 12px;
+  margin-top: 12px;
 
-.trust__header {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-}
+  &__label {
+    margin: 0;
+    @include mono-label;
+    font-size: 11px;
+  }
 
-.section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-cherry);
-  white-space: nowrap;
-}
+  &__steps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: $display;
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1.1;
+  }
 
-.section-label::before {
-  content: '';
-  display: block;
-  width: 28px;
-  height: 2px;
-  background: var(--color-cherry);
-  border-radius: 2px;
-}
+  &__step {
+    display: inline-flex;
+    align-items: baseline;
 
-.trust__heading {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 3vw, 42px);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--color-text);
-}
+    & + &::before {
+      content: '→';
+      margin: 0 10px;
+      font-family: $sans;
+      font-weight: 400;
+      font-size: 0.8em;
+    }
 
-.trust__heading em {
-  font-style: italic;
-  color: var(--color-cherry);
-}
-
-.trust__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.trust__card {
-  background: #fff;
-  border-radius: var(--radius-lg);
-  padding: 32px 28px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.trust__card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.trust__icon {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius);
-  background: rgba(155, 35, 53, 0.08);
-  color: var(--color-cherry);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.trust__icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.trust__card-title {
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-
-.trust__card-body {
-  font-size: 14px;
-  color: var(--color-text-muted);
-  line-height: 1.75;
-}
-
-@media (max-width: 900px) {
-  .trust__header { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .trust__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 520px) {
-  .trust__grid { grid-template-columns: 1fr; }
+    // Large bold text, so 3:1 is the AA floor here
+    del {
+      color: rgba(251, 251, 246, 0.78);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+  }
 }
 </style>

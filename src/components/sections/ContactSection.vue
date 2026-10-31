@@ -2,12 +2,16 @@
 import { ref, reactive } from "vue"
 import emailjs from "@emailjs/browser"
 import { useLocale } from "@/composables/useLocale"
+import { useHarvestYear } from "@/composables/useHarvestYear"
+import { EMAIL, MAPS_URL } from "@/site"
 
 const EMAILJS_SERVICE_ID = "service_bf6qy73"
 const EMAILJS_TEMPLATE_ID = "template_tl09mbv"
 const EMAILJS_PUBLIC_KEY = "lr_rk_mw1Tk6B2PUw"
 
-const { tr } = useLocale()
+
+const { tr, phoneHref } = useLocale()
+const harvestYear = useHarvestYear()
 
 const form = reactive({ name: "", email: "", phone: "", message: "" })
 const errors = reactive({ name: "", email: "", message: "" })
@@ -40,7 +44,7 @@ async function submit() {
         )
         isSubmitted.value = true
     } catch {
-        submitError.value = "Something went wrong. Please try again or email us directly."
+        submitError.value = tr.value.contact.form.sendError
     } finally {
         isSubmitting.value = false
     }
@@ -60,578 +64,513 @@ function reset() {
 </script>
 
 <template>
-    <section id="contact" class="contact">
-        <div class="container contact__inner">
-            <!-- Info column -->
-            <div v-appear class="contact__info">
-                <div class="section-label">{{ tr.contact.label }}</div>
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+        <div class="contact__info">
+            <p class="contact__kicker">{{ tr.contact.label }}</p>
+            <h2 id="contact-title" class="contact__title">
+                <span v-for="line in tr.contact.headingLines" :key="line">{{ line.replace("{year}", String(harvestYear)) }}{{ " " }}</span>
+            </h2>
+            <p class="contact__sub">{{ tr.contact.sub }}</p>
 
-                <h2 class="contact__heading">
-                    {{ tr.contact.heading }}<br />
-                    <em>{{ tr.contact.headingItalic }}</em>
-                </h2>
-
-                <p class="contact__sub">{{ tr.contact.sub }}</p>
-
-                <ul class="contact__details">
-                    <li class="contact__detail">
-                        <div class="contact__detail-icon">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10 2a5.5 5.5 0 0 0-5.5 5.5c0 4.125 5.5 10.5 5.5 10.5s5.5-6.375 5.5-10.5A5.5 5.5 0 0 0 10 2z"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    fill="rgba(255,255,255,0.1)"
-                                />
-                                <circle cx="10" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3" fill="none" />
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="contact__detail-label">{{ tr.contact.locationLabel }}</span>
-                            <span class="contact__detail-value">{{ tr.contact.locationValue }}</span>
-                        </div>
-                    </li>
-
-                    <li class="contact__detail">
-                        <div class="contact__detail-icon">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 5h14c.55 0 1 .45 1 1v9c0 .55-.45 1-1 1H3c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1z" stroke="currentColor" stroke-width="1.5" fill="rgba(255,255,255,0.1)" />
-                                <path d="M2 6l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="contact__detail-label">{{ tr.contact.emailLabel }}</span>
-                            <a href="mailto:dilyan.velev@protonmail.com" class="contact__detail-value contact__detail-value--link">dilyan.velev@protonmail.com</a>
-                        </div>
-                    </li>
-
-                    <li class="contact__detail">
-                        <div class="contact__detail-icon">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.5 13.8l-2.5-1.1c-.3-.1-.6 0-.8.2l-1.1 1.3c-1.9-.9-3.4-2.4-4.3-4.3l1.3-1.1c.2-.2.3-.5.2-.8L7.2 5.5c-.1-.3-.4-.5-.7-.5H4c-.3 0-.6.1-.8.4C2.8 6.7 2.5 9.6 4.5 12.5c1.8 2.6 4.8 4.1 8 3.5.4-.1.6-.4.5-.8V14.5c0-.3-.2-.6-.5-.7z"
-                                    stroke="currentColor"
-                                    stroke-width="1.4"
-                                    fill="rgba(255,255,255,0.1)"
-                                    stroke-linejoin="round"
-                                />
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="contact__detail-label">{{ tr.contact.phoneLabel }}</span>
-                            <a href="tel:+359894600985" class="contact__detail-value contact__detail-value--link">+359 894 600 985</a>
-                        </div>
-                    </li>
-                </ul>
+            <div class="contact__call">
+                <span class="contact__call-label">{{ tr.contact.callLabel }}</span>
+                <a class="contact__phone" :href="phoneHref">{{ tr.nav.phone }}</a>
             </div>
 
-            <!-- Form column -->
-            <div v-appear="150" class="contact__form-wrap">
-                <Transition name="fade" mode="out-in">
-                    <div v-if="isSubmitted" class="contact__success">
-                        <div class="contact__success-icon">
-                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="24" cy="24" r="20" fill="rgba(155,35,53,0.15)" />
-                                <path d="M14 24 L21 31 L34 17" stroke="var(--color-cherry-light)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <h3 class="contact__success-title">{{ tr.contact.form.successTitle }}</h3>
-                        <p class="contact__success-body">{{ tr.contact.form.successBody }}</p>
-                        <button class="contact__success-btn" @click="reset">{{ tr.contact.form.sendAnother }}</button>
+            <dl class="contact__details">
+                <div>
+                    <dt>{{ tr.contact.emailLabel }}</dt>
+                    <dd><a :href="`mailto:${EMAIL}`">{{ EMAIL }}</a></dd>
+                </div>
+                <div>
+                    <dt>{{ tr.contact.locationLabel }}</dt>
+                    <dd>{{ tr.contact.locationValue }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- The order slip -->
+        <div class="slip">
+            <Transition name="slip" mode="out-in">
+                <div v-if="isSubmitted" class="slip__done" role="status">
+                    <p class="slip__stamp" aria-hidden="true">{{ tr.contact.form.stamp }}</p>
+                    <h3 class="slip__done-title">{{ tr.contact.form.successTitle }}</h3>
+                    <p class="slip__done-body">{{ tr.contact.form.successBody }}</p>
+                    <button type="button" class="slip__again" @click="reset">{{ tr.contact.form.sendAnother }}</button>
+                </div>
+
+                <form v-else class="slip__form" novalidate @submit.prevent="submit">
+                    <div class="slip__head">
+                        <p class="slip__title">{{ tr.contact.form.slipTitle }}</p>
+                        <p class="slip__meta">{{ tr.contact.form.slipMeta }}</p>
                     </div>
 
-                    <form v-else class="contact__form" novalidate @submit.prevent="submit">
-                        <div class="form-row">
-                            <div class="form-field" :class="{ 'has-error': errors.name }">
-                                <label for="c-name" class="form-label">
-                                    {{ tr.contact.form.name }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
-                                </label>
-                                <input id="c-name" v-model="form.name" type="text" class="form-input" :placeholder="tr.contact.form.namePlaceholder" autocomplete="name" />
-                                <span v-if="errors.name" class="form-error" role="alert">{{ errors.name }}</span>
-                            </div>
-
-                            <div class="form-field" :class="{ 'has-error': errors.email }">
-                                <label for="c-email" class="form-label">
-                                    {{ tr.contact.form.email }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
-                                </label>
-                                <input id="c-email" v-model="form.email" type="email" class="form-input" :placeholder="tr.contact.form.emailPlaceholder" autocomplete="email" />
-                                <span v-if="errors.email" class="form-error" role="alert">{{ errors.email }}</span>
-                            </div>
-                        </div>
-
-                        <div class="form-field">
-                            <label for="c-phone" class="form-label">
-                                {{ tr.contact.form.phone }}
-                                <span class="form-optional">{{ tr.contact.form.phoneOptional }}</span>
+                    <div class="slip__row">
+                        <div :class="['field', { 'field--error': errors.name }]">
+                            <label for="c-name" class="field__label">
+                                {{ tr.contact.form.name }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
                             </label>
-                            <input id="c-phone" v-model="form.phone" type="tel" class="form-input" :placeholder="tr.contact.form.phonePlaceholder" autocomplete="tel" />
+                            <input id="c-name" v-model="form.name" type="text" class="field__input" :placeholder="tr.contact.form.namePlaceholder" autocomplete="name" required :aria-invalid="!!errors.name" aria-describedby="c-name-error" />
+                            <span v-if="errors.name" id="c-name-error" class="field__error" role="alert">{{ errors.name }}</span>
                         </div>
 
-                        <div class="form-field" :class="{ 'has-error': errors.message }">
-                            <label for="c-message" class="form-label">
-                                {{ tr.contact.form.message }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
+                        <div :class="['field', { 'field--error': errors.email }]">
+                            <label for="c-email" class="field__label">
+                                {{ tr.contact.form.email }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
                             </label>
-                            <textarea id="c-message" v-model="form.message" class="form-input form-textarea" :placeholder="tr.contact.form.messagePlaceholder" rows="5"></textarea>
-                            <span v-if="errors.message" class="form-error" role="alert">{{ errors.message }}</span>
+                            <input id="c-email" v-model="form.email" type="email" class="field__input" :placeholder="tr.contact.form.emailPlaceholder" autocomplete="email" required :aria-invalid="!!errors.email" aria-describedby="c-email-error" />
+                            <span v-if="errors.email" id="c-email-error" class="field__error" role="alert">{{ errors.email }}</span>
                         </div>
+                    </div>
 
-                        <p v-if="submitError" class="form-send-error" role="alert">{{ submitError }}</p>
+                    <div class="field">
+                        <label for="c-phone" class="field__label">
+                            {{ tr.contact.form.phone }} <span class="field__optional">{{ tr.contact.form.phoneOptional }}</span>
+                        </label>
+                        <input id="c-phone" v-model="form.phone" type="tel" class="field__input" :placeholder="tr.contact.form.phonePlaceholder" autocomplete="tel" />
+                    </div>
 
-                        <button type="submit" class="form-submit" :disabled="isSubmitting">
-                            <span v-if="isSubmitting" class="form-submit__spinner" aria-hidden="true"></span>
-                            <span>{{ isSubmitting ? tr.contact.form.submitting : tr.contact.form.submit }}</span>
-                            <svg v-if="!isSubmitting" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 10h14M10 4l7 6-7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </form>
-                </Transition>
-            </div>
+                    <div :class="['field', { 'field--error': errors.message }]">
+                        <label for="c-message" class="field__label">
+                            {{ tr.contact.form.message }} <span aria-hidden="true">{{ tr.contact.form.required }}</span>
+                        </label>
+                        <textarea id="c-message" v-model="form.message" class="field__input field__input--area" :placeholder="tr.contact.form.messagePlaceholder" rows="4" required :aria-invalid="!!errors.message" aria-describedby="c-message-error"></textarea>
+                        <span v-if="errors.message" id="c-message-error" class="field__error" role="alert">{{ errors.message }}</span>
+                    </div>
 
-            <!-- Full-width map -->
-            <div v-appear="250" class="contact__map-card">
-                <iframe
-                    class="contact__map-iframe"
-                    src="https://maps.google.com/maps?q=Rakitnitsa,+Stara+Zagora,+Bulgaria&t=k&z=13&ie=UTF8&iwloc=&output=embed"
-                    title="ZP Dilyan Velev — Rakitnitsa, Stara Zagora"
-                    allowfullscreen
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-                <a href="https://www.google.com/maps/search/Rakitnitsa,+Stara+Zagora,+Bulgaria" target="_blank" rel="noopener noreferrer" class="contact__map-link">
-                    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 1.5a4.5 4.5 0 0 0-4.5 4.5C3.5 9.75 8 14.5 8 14.5s4.5-4.75 4.5-8.5A4.5 4.5 0 0 0 8 1.5z" stroke="currentColor" stroke-width="1.2" />
-                        <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1" />
-                    </svg>
-                    <span>{{ tr.footer.mapsLink }}</span>
-                    <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow">
-                        <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <p v-if="submitError" class="slip__send-error" role="alert">{{ submitError }}</p>
+
+                    <button type="submit" class="slip__submit" :disabled="isSubmitting">
+                        {{ isSubmitting ? tr.contact.form.submitting : tr.contact.form.submit }}
+                        <svg v-if="!isSubmitting" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                            <path d="M4 12h15M13 6l6 6-6 6" />
+                        </svg>
+                    </button>
+                </form>
+            </Transition>
+        </div>
+
+        <figure class="contact__map">
+            <iframe
+                src="https://maps.google.com/maps?q=Rakitnitsa,+Stara+Zagora,+Bulgaria&t=k&z=13&ie=UTF8&iwloc=&output=embed"
+                :title="tr.contact.mapTitle"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <figcaption>
+                <a :href="MAPS_URL" target="_blank" rel="noopener noreferrer">
+                    {{ tr.footer.mapsLink }}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                        <path d="M7 17L17 7M9 7h8v8" />
                     </svg>
                 </a>
-            </div>
-        </div>
+            </figcaption>
+        </figure>
+
+        <!-- Uneven ink edge for the "received" stamp -->
+        <svg class="contact__defs" aria-hidden="true" focusable="false">
+            <filter id="stamp-ink-slip" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" />
+            </filter>
+        </svg>
     </section>
 </template>
 
-<style scoped>
-.contact__messaging {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
+<style scoped lang="scss">
+@use "@/design/tokens" as *;
 
-.contact__msg-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    font-size: 12.5px;
-    font-weight: 600;
-    border-radius: var(--radius);
-    transition: opacity 0.2s, transform 0.15s;
-}
-
-.contact__msg-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
-.contact__msg-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-
-.contact__msg-btn--wa    { background: #25d366; color: #fff; }
-.contact__msg-btn--viber { background: #7360f2; color: #fff; }
-
-.contact__call-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 28px;
-    padding: 13px 22px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    background: var(--color-cherry);
-    border-radius: var(--radius);
-    transition: background 0.2s, transform 0.15s;
-}
-
-.contact__call-cta svg { width: 18px; height: 18px; }
-.contact__call-cta:hover { background: var(--color-cherry-dark); transform: translateY(-1px); }
-
-.form-send-error {
-    font-size: 13px;
-    color: #f87171;
-    margin-bottom: 12px;
-    padding: 10px 14px;
-    background: rgba(248, 113, 113, 0.1);
-    border: 1px solid rgba(248, 113, 113, 0.25);
-    border-radius: var(--radius);
+@keyframes stampLand {
+    from {
+        opacity: 0;
+        transform: rotate(-8deg) scale(1.7);
+    }
+    to {
+        opacity: 0.92;
+        transform: rotate(-8deg) scale(1);
+    }
 }
 
 .contact {
-    padding: var(--section-padding) 0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(42, 77, 20, 0.25) 0%, transparent 60%), linear-gradient(160deg, #100c08 0%, #18090b 60%, #100a0a 100%);
-}
-
-.contact__inner {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     align-items: start;
-}
+    gap: 64px 88px;
+    padding: 120px $gutter 112px;
+    font-family: $sans;
+    color: $etiket;
+    background: $burla;
 
-.section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-cherry-light);
-    margin-bottom: 20px;
-}
-
-.section-label::before {
-    content: "";
-    display: block;
-    width: 28px;
-    height: 2px;
-    background: var(--color-cherry-light);
-    border-radius: 2px;
-}
-
-.contact__heading {
-    font-family: var(--font-display);
-    font-size: clamp(30px, 3.2vw, 48px);
-    font-weight: 500;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    color: #fff;
-    margin-bottom: 24px;
-}
-
-.contact__heading em {
-    font-style: italic;
-    color: var(--color-cherry-light);
-}
-
-.contact__sub {
-    font-size: 16px;
-    line-height: 1.75;
-    color: rgba(255, 255, 255, 0.55);
-    margin-bottom: 40px;
-    max-width: 380px;
-}
-
-.contact__details {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 32px;
-}
-
-.contact__detail {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-}
-
-.contact__detail-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 9px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.contact__detail-icon svg {
-    width: 17px;
-    height: 17px;
-}
-
-.contact__detail > div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-top: 2px;
-}
-
-.contact__detail-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.contact__detail-value {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.72);
-}
-.contact__detail-value--link {
-    transition: color 0.2s;
-}
-.contact__detail-value--link:hover {
-    color: #fff;
-}
-
-/* Map card — full width row */
-.contact__map-card {
-    grid-column: 1 / -1;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contact__map-iframe {
-    display: block;
-    width: 100%;
-    height: 400px;
-    border: none;
-    filter: grayscale(20%) contrast(1.05);
-}
-
-.contact__map-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.05);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    transition:
-        color 0.2s,
-        background 0.2s;
-}
-
-.contact__map-link svg {
-    width: 15px;
-    height: 15px;
-    flex-shrink: 0;
-}
-.contact__map-link .arrow {
-    margin-left: auto;
-    transition: transform 0.2s;
-}
-.contact__map-link:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.08);
-}
-.contact__map-link:hover .arrow {
-    transform: translateX(3px);
-}
-
-/* ── Form ── */
-.contact__form-wrap {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: var(--radius-lg);
-    padding: 40px;
-    backdrop-filter: blur(8px);
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-.form-field:last-of-type {
-    margin-bottom: 0;
-}
-
-.form-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.55);
-    letter-spacing: 0.01em;
-}
-.form-label span[aria-hidden] {
-    color: var(--color-cherry-light);
-    margin-left: 2px;
-}
-.form-optional {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.28);
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px 16px;
-    font-family: var(--font-body);
-    font-size: 14.5px;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: var(--radius);
-    outline: none;
-    transition:
-        border-color 0.2s,
-        background 0.2s;
-    resize: none;
-}
-
-.form-input::placeholder {
-    color: rgba(255, 255, 255, 0.22);
-}
-.form-input:focus {
-    border-color: var(--color-cherry-light);
-    background: rgba(255, 255, 255, 0.09);
-}
-.has-error .form-input {
-    border-color: rgba(255, 100, 100, 0.6);
-}
-.form-textarea {
-    min-height: 120px;
-    line-height: 1.6;
-}
-.form-error {
-    font-size: 12.5px;
-    color: rgba(255, 140, 140, 0.9);
-}
-
-.form-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px 28px;
-    margin-top: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #fff;
-    background: var(--color-cherry);
-    border-radius: var(--radius);
-    border: 2px solid var(--color-cherry);
-    transition:
-        background 0.2s,
-        transform 0.15s,
-        opacity 0.2s;
-}
-
-.form-submit:not(:disabled):hover {
-    background: var(--color-cherry-dark);
-    border-color: var(--color-cherry-dark);
-    transform: translateY(-2px);
-}
-
-.form-submit:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
-.form-submit svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.2s;
-}
-.form-submit:not(:disabled):hover svg {
-    transform: translateX(3px);
-}
-
-.form-submit__spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+    @media (max-width: $bp-tablet) {
+        gap: 56px 48px;
+        padding: 96px $gutter-tablet 96px;
     }
-}
 
-/* Success */
-.contact__success {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 24px 0;
-}
-.contact__success-icon {
-    margin-bottom: 24px;
-}
-.contact__success-icon svg {
-    width: 64px;
-    height: 64px;
-}
-.contact__success-title {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 12px;
-}
-.contact__success-body {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.55);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 280px;
-}
-.contact__success-btn {
-    padding: 10px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius);
-    transition:
-        background 0.2s,
-        color 0.2s;
-}
-.contact__success-btn:hover {
-    background: rgba(255, 255, 255, 0.13);
-    color: #fff;
-}
+    @media (max-width: 900px) {
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-
-@media (max-width: 900px) {
-    .contact__inner {
-        grid-template-columns: 1fr;
+    @media (max-width: $bp-phone) {
         gap: 48px;
+        padding: 72px $gutter-phone 72px;
     }
-    .contact__sub {
-        max-width: 100%;
+
+    a {
+        @include focus-ring($etiket);
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+    }
+
+    &__kicker {
+        margin: 0;
+        @include mono-label;
+    }
+
+    &__title {
+        margin: 0 0 8px;
+        font-family: $display;
+        font-weight: 900;
+        font-size: clamp(54px, 5.6vw, 92px);
+        line-height: 0.88;
+        letter-spacing: -0.005em;
+
+        span {
+            display: block;
+        }
+    }
+
+    &__sub {
+        margin: 0;
+        max-width: 46ch;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    &__call {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 14px;
+    }
+
+    &__call-label {
+        @include mono-label;
+        font-size: 11px;
+    }
+
+    &__phone {
+        font-family: $display;
+        font-weight: 900;
+        font-size: clamp(48px, 4.6vw, 72px);
+        line-height: 1;
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 8px;
+    }
+
+    &__details {
+        width: 100%;
+        max-width: 420px;
+        margin: 10px 0 0;
+        border-top: 2px solid $etiket;
+
+        div {
+            display: grid;
+            grid-template-columns: 120px minmax(0, 1fr);
+            align-items: baseline;
+            gap: 16px;
+            padding: 10px 0 9px;
+            border-bottom: 1px dotted rgba(251, 251, 246, 0.55);
+        }
+
+        dt {
+            @include mono-label;
+            font-size: 11px;
+        }
+
+        dd {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        a {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+
+    &__map {
+        grid-column: 1 / -1;
+        margin: 0;
+
+        iframe {
+            display: block;
+            width: 100%;
+            height: 340px;
+            border: 6px solid $etiket;
+            border-radius: $radius;
+            background: $van;
+        }
+
+        figcaption {
+            margin-top: 12px;
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            @include mono-label;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+    }
+
+    &__defs {
+        position: absolute;
+        width: 0;
+        height: 0;
     }
 }
 
-@media (max-width: 520px) {
-    .contact__form-wrap {
-        padding: 28px 20px;
+// Torn from an order pad: paper, a printed head, ruled lines to write on
+.slip {
+    position: relative;
+    padding: 34px 36px 36px;
+    border-radius: $radius;
+    color: $bing;
+    background: $etiket;
+    box-shadow: $paper-shadow;
+
+    @media (max-width: $bp-phone) {
+        padding: 26px 20px 28px;
     }
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
+
+    // Perforated top edge where it came off the pad
+    &::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        border-top: 2px dashed rgba(36, 16, 15, 0.3);
     }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+    }
+
+    &__head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 6px 16px;
+        padding: 6px 0 14px;
+        border-bottom: $rule;
+    }
+
+    &__title {
+        margin: 0;
+        font-family: $display;
+        font-weight: 900;
+        font-size: 40px;
+        line-height: 0.9;
+        text-transform: uppercase;
+    }
+
+    &__meta {
+        margin: 0;
+        @include mono-label;
+        font-size: 11px;
+        color: $kora;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 24px;
+
+        @media (max-width: $bp-phone) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    &__send-error {
+        margin: 0;
+        padding: 10px 12px;
+        border-left: 3px solid $burla;
+        font-size: 15px;
+        color: $burla;
+        background: rgba(194, 29, 56, 0.06);
+    }
+
+    &__submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 58px;
+        margin-top: 4px;
+        padding: 0 24px;
+        border-radius: $radius;
+        font-family: $sans;
+        font-size: 17px;
+        font-weight: 600;
+        color: $etiket;
+        background: $burla;
+        transition: background-color 0.2s;
+
+        &:hover:not(:disabled) {
+            background: $van;
+        }
+
+        &:disabled {
+            cursor: progress;
+            opacity: 0.75;
+        }
+
+        @include focus-ring;
+    }
+
+    &__done {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 24px 0 8px;
+    }
+
+    &__stamp {
+        margin: 0 0 18px;
+        padding: 10px 22px 8px;
+        border: 4px double $pechat;
+        border-radius: 4px;
+        color: $pechat;
+        font-family: $display;
+        font-size: 44px;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        mix-blend-mode: multiply;
+        filter: url(#stamp-ink-slip);
+        opacity: 0.92;
+        transform: rotate(-8deg);
+        animation: stampLand 0.38s $ease-settle 0.15s both;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    &__done-title {
+        margin: 0;
+        font-family: $display;
+        font-weight: 900;
+        font-size: 36px;
+        line-height: 1;
+    }
+
+    &__done-body {
+        margin: 0;
+        font-size: 17px;
+        line-height: 1.55;
+        color: $kora;
+    }
+
+    &__again {
+        margin-top: 8px;
+        padding-bottom: 4px;
+        border-bottom: $rule;
+        font-family: $sans;
+        font-size: 16px;
+        font-weight: 600;
+        color: $bing;
+
+        @include focus-ring;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &__label {
+        @include mono-label;
+        font-size: 11px;
+        color: $kora;
+    }
+
+    &__optional {
+        text-transform: none;
+        letter-spacing: 0;
+    }
+
+    // Written-on lines, not boxes
+    &__input {
+        width: 100%;
+        padding: 8px 0 9px;
+        border: none;
+        border-bottom: $rule;
+        border-radius: 0;
+        font-family: $sans;
+        font-size: 17px;
+        color: $bing;
+        background: transparent;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &::placeholder {
+            color: rgba(94, 81, 72, 0.75);
+        }
+
+        &:focus {
+            outline: none;
+            border-bottom-color: $burla;
+            box-shadow: 0 2px 0 $burla;
+        }
+
+        &--area {
+            min-height: 112px;
+            padding-top: 2px;
+            resize: vertical;
+            // Text sits on the pad's ruled lines: line-height = rule spacing
+            line-height: 34px;
+            background: repeating-linear-gradient(transparent 0 33px, rgba(36, 16, 15, 0.14) 33px 34px);
+            background-position: 0 2px;
+            background-attachment: local;
+        }
+    }
+
+    &__error {
+        font-size: 14px;
+        font-weight: 600;
+        color: $burla;
+    }
+
+    &--error .field__input {
+        border-bottom-color: $burla;
+    }
+}
+
+.slip-enter-active,
+.slip-leave-active {
+    transition: opacity 0.25s ease;
+}
+
+.slip-enter-from,
+.slip-leave-to {
+    opacity: 0;
 }
 </style>

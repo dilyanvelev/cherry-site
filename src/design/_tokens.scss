@@ -1,0 +1,45 @@
+// Design DNA tokens — see src/design/design-dna.md. A value that isn't here is a bug.
+
+// Palette
+$varosano: #eceee7; // lime-washed trunks — base
+$bing: #24100f; // Bing skin — ink
+$burla: #c21d38; // Burlat red — structural zones, primary CTA
+$van: #6a0e1e; // Van skin — deep zones, hover
+$pechat: #2d3c9a; // rubber-stamp ink — stamp only
+$etiket: #fbfbf6; // crate-label paper
+$kora: #5e5148; // bark — secondary text, captions
+
+// Type
+$display: "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif;
+$sans: "Sofia Sans", system-ui, sans-serif;
+$mono: "IBM Plex Mono", ui-monospace, monospace;
+
+// Geometry
+$radius: 2px;
+$rule: 2px solid $bing;
+$paper-shadow: 0 1px 0 rgba(36, 16, 15, 0.08), 0 18px 34px -12px rgba(36, 16, 15, 0.35);
+
+// Motion — the one curve
+$ease-settle: cubic-bezier(0.2, 0.9, 0.25, 1.15);
+
+// Layout
+$gutter: 64px;
+$gutter-tablet: 40px;
+$gutter-phone: 16px;
+$bp-tablet: 1100px;
+$bp-phone: 640px;
+
+@mixin mono-label {
+    font-family: $mono;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+@mixin focus-ring($color: $bing) {
+    &:focus-visible {
+        outline: 2px solid $color;
+        outline-offset: 3px;
+    }
+}

@@ -2,215 +2,193 @@
 import { useLocale } from "@/composables/useLocale"
 const { tr } = useLocale()
 
-const statValues = ["15+", "4", "3"]
+function scrollTo(id: string) {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: "smooth" })
+}
 </script>
 
 <template>
-    <section id="about" class="about">
-        <div class="container about__inner">
-            <div class="about__text">
-                <div v-appear class="section-label">{{ tr.about.label }}</div>
-
-                <h2 v-appear="80" class="about__heading">
-                    {{ tr.about.heading }}<br />
-                    <em>{{ tr.about.headingItalic }}</em>
-                </h2>
-
-                <p v-appear="160" class="about__body">{{ tr.about.body1 }}</p>
-                <p v-appear="220" class="about__body">{{ tr.about.body2 }}</p>
-
-                <div class="about__stats">
-                    <div v-for="(label, i) in tr.about.statLabels" :key="i" v-appear="300 + i * 100" class="about__stat">
-                        <span class="about__stat-value">{{ statValues[i] }}</span>
-                        <span class="about__stat-label">{{ label }}</span>
-                    </div>
-                </div>
+    <section id="about" class="about" aria-labelledby="about-title">
+        <figure class="about__figure">
+            <div class="about__photo">
+                <img src="/gallery/garden.jpg" width="768" height="1024" :alt="tr.about.photoAlt" loading="lazy" decoding="async" />
+                <span class="about__caption">{{ tr.about.photoCaption }}</span>
             </div>
+            <figcaption class="about__note">
+                <span class="about__note-label">{{ tr.about.noteLabel }}</span>
+                {{ tr.about.note }}
+            </figcaption>
+        </figure>
 
-            <div v-appear="100" class="about__visual" aria-hidden="true">
-                <div class="about__card about__card--main">
-                    <img src="/gallery/garden.jpg" alt="Cherry garden" class="about__garden-img" />
-                </div>
-
-                <div class="about__card about__card--quote">
-                    <svg class="about__quote-icon" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 24 L0 12 C0 5.4 4 1.6 12 0 L14 4 C10.7 4.7 9 6.7 9 10 L14 10 L14 24 Z" fill="currentColor" />
-                        <path d="M18 24 L18 12 C18 5.4 22 1.6 30 0 L32 4 C28.7 4.7 27 6.7 27 10 L32 10 L32 24 Z" fill="currentColor" />
-                    </svg>
-                    <p>{{ tr.about.quote }}</p>
-                    <div class="about__quote-author">{{ tr.about.quoteAuthor }}</div>
-                </div>
-            </div>
+        <div class="about__text">
+            <p class="about__kicker">{{ tr.about.label }}</p>
+            <h2 id="about-title" class="about__title">
+                <span v-for="(line, i) in tr.about.headingLines" :key="line" :class="['about__title-line', { 'about__title-line--accent': i === tr.about.headingLines.length - 1 }]">{{ line }}{{ " " }}</span>
+            </h2>
+            <p class="about__body">{{ tr.about.body1 }}</p>
+            <p class="about__body">{{ tr.about.body2 }}</p>
+            <a class="about__link" href="#varieties" @click.prevent="scrollTo('varieties')">
+                {{ tr.about.link }}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                    <path d="M4 12h15M13 6l6 6-6 6" />
+                </svg>
+            </a>
         </div>
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "@/design/tokens" as *;
+
 .about {
-    padding: var(--section-padding) 0;
-    background: var(--color-warm-white);
-}
-
-.about__inner {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     align-items: center;
-}
+    gap: 56px 88px;
+    padding: 120px $gutter 128px;
+    font-family: $sans;
+    color: $bing;
+    background: $varosano;
 
-.section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-cherry);
-    margin-bottom: 20px;
-}
-
-.section-label::before {
-    content: "";
-    display: block;
-    width: 28px;
-    height: 2px;
-    background: var(--color-cherry);
-    border-radius: 2px;
-}
-
-.about__heading {
-    font-family: var(--font-display);
-    font-size: clamp(30px, 3.2vw, 44px);
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--color-text);
-    margin-bottom: 28px;
-}
-
-.about__heading em {
-    font-style: italic;
-    color: var(--color-cherry);
-}
-
-.about__body {
-    font-size: 16px;
-    color: var(--color-text-muted);
-    line-height: 1.8;
-    margin-bottom: 20px;
-}
-
-.about__stats {
-    display: flex;
-    gap: 40px;
-    margin-top: 44px;
-    padding-top: 40px;
-    border-top: 1px solid var(--color-border);
-}
-
-.about__stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.about__stat-value {
-    font-family: var(--font-display);
-    font-size: 40px;
-    font-weight: 600;
-    color: var(--color-cherry);
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
-
-.about__stat-label {
-    font-size: 13px;
-    color: var(--color-text-muted);
-    font-weight: 500;
-}
-
-.about__visual {
-    position: relative;
-}
-
-.about__card {
-    background: #fff;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
-
-.about__card--main {
-    min-height: 340px;
-    overflow: hidden;
-}
-
-.about__garden-img {
-    width: 100%;
-    height: 100%;
-    min-height: 340px;
-    object-fit: cover;
-    display: block;
-}
-
-.about__card--quote {
-    position: absolute;
-    bottom: -32px;
-    left: -32px;
-    width: 280px;
-    padding: 24px 28px;
-    background: var(--color-cherry-dark);
-    color: #fff;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-}
-
-.about__quote-icon {
-    width: 24px;
-    height: 18px;
-    color: rgba(255, 255, 255, 0.35);
-    margin-bottom: 12px;
-}
-
-.about__card--quote p {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 12px;
-}
-
-.about__quote-author {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.55);
-    text-transform: uppercase;
-}
-
-@media (max-width: 900px) {
-    .about__inner {
-        grid-template-columns: 1fr;
-        gap: 60px;
+    @media (max-width: $bp-tablet) {
+        gap: 48px 56px;
+        padding: 96px $gutter-tablet 104px;
     }
-    .about__visual {
-        order: -1;
+
+    @media (max-width: 900px) {
+        grid-template-columns: minmax(0, 1fr);
     }
-    .about__card--quote {
+
+    @media (max-width: $bp-phone) {
+        padding: 72px $gutter-phone 80px;
+    }
+
+    &__figure {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin: 0;
+
+        // Text first on narrow screens, the photo backs it up
+        @media (max-width: 900px) {
+            order: 1;
+            max-width: 520px;
+        }
+    }
+
+    &__photo {
         position: relative;
-        bottom: auto;
-        left: auto;
-        width: 100%;
-        margin-top: 16px;
-    }
-}
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        border: $rule;
+        border-radius: $radius;
+        background: $kora;
 
-@media (max-width: 480px) {
-    .about__stats {
-        gap: 24px;
-        flex-wrap: wrap;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 70%;
+            filter: saturate(1.06) contrast(1.04);
+        }
+    }
+
+    &__caption {
+        position: absolute;
+        left: 14px;
+        bottom: 14px;
+        padding: 6px 10px;
+        border-radius: $radius;
+        background: $etiket;
+        @include mono-label;
+        font-size: 11px;
+    }
+
+    &__note {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 44ch;
+        padding-left: 18px;
+        border-left: $rule;
+        font-size: 15px;
+        line-height: 1.55;
+        color: $kora;
+    }
+
+    &__note-label {
+        @include mono-label;
+        font-size: 11px;
+        color: $bing;
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+        max-width: 640px;
+    }
+
+    &__kicker {
+        margin: 0;
+        @include mono-label;
+        color: $kora;
+    }
+
+    &__title {
+        margin: 0 0 8px;
+        font-family: $display;
+        font-weight: 900;
+        font-size: clamp(54px, 5.6vw, 92px);
+        line-height: 0.88;
+        letter-spacing: -0.005em;
+    }
+
+    &__title-line {
+        display: block;
+
+        &--accent {
+            color: $burla;
+        }
+    }
+
+    &__body {
+        margin: 0;
+        max-width: 56ch;
+        font-size: 18px;
+        line-height: 1.65;
+
+        & + & {
+            color: $kora;
+        }
+    }
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        padding-bottom: 4px;
+        border-bottom: $rule;
+        font-size: 17px;
+        font-weight: 600;
+        transition: color 0.2s;
+
+        svg {
+            transition: transform 0.35s $ease-settle;
+        }
+
+        &:hover {
+            color: $burla;
+
+            svg {
+                transform: translateX(4px);
+            }
+        }
+
+        @include focus-ring;
     }
 }
 </style>

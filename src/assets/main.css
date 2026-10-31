@@ -5,35 +5,39 @@
 }
 
 :root {
-  --color-cherry:       #9B2335;
-  --color-cherry-dark:  #6B1520;
-  --color-cherry-light: #C4435A;
-  --color-forest:       #2A4D14;
-  --color-forest-dark:  #1a2e0e;
-  --color-bark:         #5C3D2E;
-  --color-gold:         #C4932A;
-  --color-cream:        #F7F3EE;
-  --color-warm-white:   #FDFCFA;
-  --color-text:         #1C1A18;
-  --color-text-muted:   #6B6560;
-  --color-border:       #E2DDD6;
+  /* Legacy names, now mapped onto the Design DNA (src/design/_tokens.scss).
+     Live sections use the SCSS tokens; these keep the parked sections on-palette. */
+  --color-cherry:       #c21d38;
+  --color-cherry-dark:  #6a0e1e;
+  --color-cherry-light: #c21d38;
+  --color-forest:       #24100f;
+  --color-forest-dark:  #24100f;
+  --color-bark:         #5e5148;
+  --color-gold:         #5e5148;
+  --color-cream:        #eceee7;
+  --color-warm-white:   #eceee7;
+  --color-text:         #24100f;
+  --color-text-muted:   #5e5148;
+  --color-border:       rgba(36, 16, 15, 0.18);
 
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
+  --font-body:    'Sofia Sans', system-ui, sans-serif;
 
-  --radius:    4px;
-  --radius-lg: 10px;
-  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.07);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+  --radius:    2px;
+  --radius-lg: 2px;
+  --shadow-sm: 0 1px 0 rgba(36, 16, 15, 0.08);
+  --shadow-md: 0 1px 0 rgba(36, 16, 15, 0.08), 0 18px 34px -12px rgba(36, 16, 15, 0.35);
+  --shadow-lg: 0 1px 0 rgba(36, 16, 15, 0.08), 0 18px 34px -12px rgba(36, 16, 15, 0.35);
 
   --max-width:       1180px;
   --section-padding: 100px;
-  --header-height:   72px;
+  --header-height:   88px;
 }
 
 html {
   scroll-behavior: smooth;
+  /* Anchored sections land below the fixed header */
+  scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -74,9 +78,21 @@ button {
   }
 }
 
+@media (max-width: 1100px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --section-padding: 72px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 68px;
   }
 }
 

@@ -1,22 +1,40 @@
 <!doctype html>
-<html lang="en">
+<html lang="bg">
     <head>
         <meta charset="UTF-8" />
-        <link rel="icon" type="image/png" href="/logo_2.0.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Fresh cherries direct from the farm in Rakitnitsa, Bulgaria. Wholesale and retail orders. No middlemen — buy straight from producer ZP Dilyan Velev." />
-        <meta name="keywords" content="cherries Bulgaria, fresh cherries Rakitnitsa, cherry wholesale Bulgaria, череши България, пресни череши Ракитница" />
-        <meta name="theme-color" content="#9B2335" />
-        <meta property="og:title" content="ZP Dilyan Velev — Fresh Cherries from Rakitnitsa, Bulgaria" />
-        <meta property="og:description" content="Buy fresh cherries direct from the producer. Wholesale and retail. No middlemen. Rakitnitsa, Stara Zagora." />
+        <!-- Title and description come from translations.bg.seo (vite.config.ts → siteSeo) -->
+        <title>%SEO_TITLE%</title>
+        <meta name="description" content="%SEO_DESCRIPTION%" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="/logo_2.0.png" />
+        <link rel="apple-touch-icon" href="/logo_2.0.png" />
+        <meta name="theme-color" content="#ECEEE7" />
+
         <meta property="og:type" content="website" />
-        <title>ZP Dilyan Velev — Fresh Cherries from Rakitnitsa, Bulgaria</title>
+        <meta property="og:site_name" content="ЗП Дилян Велев" />
+        <meta property="og:title" content="%SEO_TITLE%" />
+        <meta property="og:description" content="%SEO_DESCRIPTION%" />
+        <meta property="og:locale" content="bg_BG" />
+        <meta property="og:locale:alternate" content="en_GB" />
+        <meta name="twitter:card" content="summary_large_image" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <!-- Design DNA faces (src/design/design-dna.md) -->
+        <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@800;900&family=Sofia+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+        <link rel="preload" as="image" href="/gallery/harvest-crates.jpg" fetchpriority="high" />
     </head>
     <body>
         <div id="app"></div>
+        <!-- For crawlers and visitors without JavaScript: the essentials of the page -->
+        <noscript>
+            <main style="max-width: 640px; margin: 0 auto; padding: 48px 16px; font-family: sans-serif; line-height: 1.6">
+                <h1>Череши на едро и дребно от производител в Ракитница, Стара Загора</h1>
+                <p>ЗП Дилян Велев отглежда череши повече от двадесет години в 4 хектара собствени градини. Сортове: Бигаро Бюрла (края на май – началото на юни), Ван (юни) и Бинг (края на юни – юли). Продаваме на кашон за търговци и на килограм за домакинства, както и собствен черешов сок.</p>
+                <p>Телефон: <a href="tel:+359894600985">0894 600 985</a> · Имейл: <a href="mailto:dilyan.velev@protonmail.com">dilyan.velev@protonmail.com</a></p>
+            </main>
+        </noscript>
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

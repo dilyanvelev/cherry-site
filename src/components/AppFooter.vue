@@ -1,8 +1,19 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
-const { tr } = useLocale()
+import BrandLogo from '@/components/BrandLogo.vue'
+import { EMAIL, MAPS_URL } from '@/site'
+
+const { tr, phoneHref } = useLocale()
 
 const year = new Date().getFullYear()
+
+const navLinks = computed(() => [
+  { id: 'about', label: tr.value.nav.about },
+  { id: 'varieties', label: tr.value.nav.varieties },
+  { id: 'juice', label: tr.value.nav.juice },
+  { id: 'contact', label: tr.value.nav.contact },
+])
 
 function scrollTo(id: string) {
   const el = document.getElementById(id)
@@ -12,154 +23,190 @@ function scrollTo(id: string) {
 
 <template>
   <footer class="footer">
-    <div class="container footer__inner">
-
+    <div class="footer__main">
       <div class="footer__brand">
-        <div class="footer__logo">
-          <img src="/logo_2.0.png" alt="ЗП Дилян Велев" class="footer__logo-img" />
-        </div>
+        <span class="footer__logo">
+          <BrandLogo />
+        </span>
         <p class="footer__tagline">{{ tr.footer.tagline }}</p>
       </div>
 
-      <nav class="footer__nav" aria-label="Footer navigation">
-        <span class="footer__col-heading">{{ tr.footer.navHeading }}</span>
-        <a href="#home"      class="footer__nav-link" @click.prevent="scrollTo('home')">{{ tr.nav.home }}</a>
-        <a href="#about"     class="footer__nav-link" @click.prevent="scrollTo('about')">{{ tr.nav.about }}</a>
-        <a href="#varieties" class="footer__nav-link" @click.prevent="scrollTo('varieties')">{{ tr.nav.varieties }}</a>
-        <a href="#orchards"  class="footer__nav-link" @click.prevent="scrollTo('orchards')">{{ tr.nav.orchards }}</a>
-        <a href="#contact"   class="footer__nav-link" @click.prevent="scrollTo('contact')">{{ tr.nav.contact }}</a>
+      <nav class="footer__col" :aria-label="tr.footer.navLabel">
+        <p class="footer__heading">{{ tr.footer.navHeading }}</p>
+        <a v-for="link in navLinks" :key="link.id" :href="`#${link.id}`" class="footer__link" @click.prevent="scrollTo(link.id)">{{ link.label }}</a>
       </nav>
 
-      <div class="footer__contact-col">
-        <span class="footer__col-heading">{{ tr.footer.contactHeading }}</span>
-        <a href="mailto:dilyan.velev@protonmail.com" class="footer__contact-link">dilyan.velev@protonmail.com</a>
-        <a href="tel:+359894600985" class="footer__contact-link">+359 894 600 985</a>
-        <p class="footer__contact-text">{{ tr.contact.locationValue }}</p>
-        <a
-          href="https://www.google.com/maps/search/Rakitnitsa,+Stara+Zagora,+Bulgaria"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer__maps-btn"
-        >
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 1.5a4.5 4.5 0 0 0-4.5 4.5C3.5 9.75 8 14.5 8 14.5s4.5-4.75 4.5-8.5A4.5 4.5 0 0 0 8 1.5z" stroke="currentColor" stroke-width="1.2"/>
-            <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1"/>
-          </svg>
+      <div class="footer__col">
+        <p class="footer__heading">{{ tr.footer.contactHeading }}</p>
+        <a class="footer__phone" :href="phoneHref">{{ tr.nav.phone }}</a>
+        <a class="footer__link" :href="`mailto:${EMAIL}`">{{ EMAIL }}</a>
+        <p class="footer__text">{{ tr.contact.locationValue }}</p>
+        <a class="footer__link footer__link--small" :href="MAPS_URL" target="_blank" rel="noopener noreferrer">
           {{ tr.footer.mapsLink }}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M7 17L17 7M9 7h8v8" />
+          </svg>
         </a>
       </div>
-
     </div>
 
     <div class="footer__bottom">
-      <div class="container footer__bottom-inner">
-        <span>© {{ year }} {{ tr.footer.copyright }}</span>
-        <span class="footer__divider">·</span>
-        <span>{{ tr.footer.region }}</span>
-      </div>
+      <span>© {{ year }} {{ tr.footer.copyright }} · {{ tr.footer.place }}</span>
+      <a href="#home" class="footer__top" @click.prevent="scrollTo('home')">
+        {{ tr.footer.toTop }}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+          <path d="M12 20V5M6 11l6-6 6 6" />
+        </svg>
+      </a>
     </div>
   </footer>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '@/design/tokens' as *;
+
+$muted: rgba(236, 238, 231, 0.72);
+
+// The dark close after the last colour zone
 .footer {
-  background: #110d0b;
-  color: rgba(255,255,255,0.60);
-  font-size: 14px;
-}
+  padding: 80px $gutter 32px;
+  font-family: $sans;
+  color: $varosano;
+  background: $bing;
 
-.footer__inner {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
-  gap: 48px;
-  padding-top: 64px;
-  padding-bottom: 56px;
-}
+  @media (max-width: $bp-tablet) {
+    padding: 72px $gutter-tablet 28px;
+  }
 
-.footer__logo {
-  margin-bottom: 18px;
-}
+  @media (max-width: $bp-phone) {
+    padding: 56px $gutter-phone 24px;
+  }
 
-.footer__logo-img {
-  height: 120px;
-  width: auto;
-  border-radius: 12px;
-  object-fit: contain;
-}
+  a {
+    @include focus-ring($varosano);
+  }
 
-.footer__tagline {
-  font-size: 14px;
-  line-height: 1.75;
-  color: rgba(255,255,255,0.42);
-  white-space: pre-line;
-}
+  &__main {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr);
+    gap: 48px 56px;
+    padding-bottom: 56px;
 
-.footer__nav,
-.footer__contact-col,
-.footer__hours-col {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-.footer__col-heading {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.32);
-  margin-bottom: 4px;
-}
+    @media (max-width: $bp-phone) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+  }
 
-.footer__nav-link,
-.footer__contact-link {
-  font-size: 14px;
-  color: rgba(255,255,255,0.55);
-  transition: color 0.2s;
-}
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
 
-.footer__nav-link:hover,
-.footer__contact-link:hover { color: #fff; }
+    @media (max-width: 900px) {
+      grid-column: 1 / -1;
+    }
+  }
 
-.footer__contact-text { font-size: 14px; color: rgba(255,255,255,0.45); }
+  &__logo {
+    display: block;
+    width: 84px;
+    height: 84px;
+  }
 
-.footer__maps-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-  padding: 8px 14px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.55);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: var(--radius);
-  transition: color 0.2s, border-color 0.2s;
-}
+  &__tagline {
+    margin: 0;
+    font-family: $display;
+    font-weight: 800;
+    font-size: clamp(28px, 2.6vw, 38px);
+    line-height: 1;
+    white-space: pre-line;
+  }
 
-.footer__maps-btn svg { width: 14px; height: 14px; }
-.footer__maps-btn:hover { color: #fff; border-color: rgba(255,255,255,0.30); }
+  &__col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 
-.footer__bottom { border-top: 1px solid rgba(255,255,255,0.07); }
-.footer__bottom-inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.28);
-}
-.footer__divider { opacity: 0.4; }
+  &__heading {
+    margin: 0 0 6px;
+    @include mono-label;
+    font-size: 11px;
+    color: $muted;
+  }
 
-@media (max-width: 900px) {
-  .footer__inner { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .footer__brand { grid-column: 1 / -1; }
-}
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+    transition: color 0.2s;
 
-@media (max-width: 480px) {
-  .footer__inner { grid-template-columns: 1fr; }
-  .footer__bottom-inner { flex-direction: column; gap: 4px; align-items: flex-start; }
-  .footer__divider { display: none; }
+    &:hover {
+      color: $etiket;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    &--small {
+      margin-top: 4px;
+      @include mono-label;
+      font-size: 11px;
+    }
+  }
+
+  &__phone {
+    font-family: $display;
+    font-weight: 900;
+    font-size: 34px;
+    line-height: 1;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 16px;
+    color: $muted;
+  }
+
+  &__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(236, 238, 231, 0.22);
+    font-size: 14px;
+    color: $muted;
+  }
+
+  &__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    @include mono-label;
+    font-size: 11px;
+    color: $varosano;
+
+    svg {
+      transition: transform 0.35s $ease-settle;
+    }
+
+    &:hover svg {
+      transform: translateY(-3px);
+    }
+  }
 }
 </style>

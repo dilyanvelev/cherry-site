@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<title>Hero — ЗП Дилян Велев</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Onest:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0E0B0A}
+a{color:#F4EDE4}a:hover{color:#FFFFFF}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes videoZoom{from{transform:scale(1)}to{transform:scale(1.12)}}
+@keyframes cue{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(14px);opacity:0}}
+.hero{position:relative;min-height:100vh;min-height:max(100vh,720px);overflow:hidden;font-family:'Onest',system-ui,sans-serif;color:#F4EDE4;display:flex;flex-direction:column}
+.hero__media{position:absolute;inset:0;animation:videoZoom 22s ease-out forwards;transform-origin:70% 45%}
+.hero__media svg{width:100%;height:100%;display:block}
+.hero__scrim{position:absolute;inset:0;pointer-events:none}
+.fu{opacity:0;animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}.d4{animation-delay:.6s}.d5{animation-delay:.8s}.d6{animation-delay:1s}
+.nav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 64px}
+.nav__links{display:flex;gap:36px;align-items:center}
+.nav__links a{text-decoration:none;font-size:15px;color:#E6DDD2;letter-spacing:.01em}
+.nav__links a:hover{color:#FFFFFF}
+.nav__right{display:flex;align-items:center;gap:20px}
+.nav__menu{display:none}
+.body{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:end;gap:48px;padding:40px 64px 56px}
+.h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(56px,8.4vw,128px);line-height:.92;letter-spacing:-.02em;margin:0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid rgba(244,237,228,.28)}
+.stat{padding:22px 0 20px;border-bottom:1px solid rgba(244,237,228,.28)}
+.stat:nth-child(odd){padding-right:24px;border-right:1px solid rgba(244,237,228,.28)}
+.stat:nth-child(even){padding-left:28px}
+.ctas{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 30px;border-radius:999px;font-size:16px;font-weight:500;text-decoration:none;transition:transform .2s ease,background-color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.cue{position:absolute;left:50%;bottom:22px;z-index:2;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px}
+@media (max-width:1100px){
+.nav__links{display:none}
+.nav__menu{display:inline-flex}
+.body{grid-template-columns:minmax(0,1fr);align-items:start;gap:40px;padding:24px 40px 72px}
+.nav{padding:24px 40px}
+}
+@media (max-width:640px){
+.nav{padding:18px 16px}
+.nav__phone{display:none}
+.body{padding:16px 16px 72px;gap:32px}
+.h1{font-size:54px}
+.ctas{flex-direction:column}
+.btn{justify-content:center}
+.placeholder-tag{display:none}
+}
+</style>
+
+</head>
+<body>
+<section class="hero" aria-label="Начало">
+
+  <div class="hero__media" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ground" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#1B1512"></stop>
+          <stop offset=".55" stop-color="#241A15"></stop>
+          <stop offset="1" stop-color="#140F0C"></stop>
+        </linearGradient>
+        <radialGradient id="cherry" cx=".34" cy=".3" r=".75">
+          <stop offset="0" stop-color="#F0596C"></stop>
+          <stop offset=".35" stop-color="#B01E36"></stop>
+          <stop offset=".8" stop-color="#5E0A18"></stop>
+          <stop offset="1" stop-color="#3A050E"></stop>
+        </radialGradient>
+        <radialGradient id="cherryDark" cx=".34" cy=".3" r=".75">
+          <stop offset="0" stop-color="#C8394C"></stop>
+          <stop offset=".4" stop-color="#7E1225"></stop>
+          <stop offset="1" stop-color="#2C040B"></stop>
+        </radialGradient>
+        <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4E6B3A"></stop>
+          <stop offset="1" stop-color="#1F3018"></stop>
+        </linearGradient>
+        <filter id="blurL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="28"></feGaussianBlur></filter>
+        <filter id="blurM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"></feGaussianBlur></filter>
+        <filter id="blurS" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+      </defs>
+      <rect width="1440" height="900" fill="url(#ground)"></rect>
+
+      <g filter="url(#blurL)" opacity=".9">
+        <ellipse cx="1180" cy="120" rx="260" ry="160" fill="#3D5A2C" opacity=".55"></ellipse>
+        <ellipse cx="860" cy="760" rx="300" ry="140" fill="#2E4322" opacity=".5"></ellipse>
+        <circle cx="1360" cy="560" r="90" fill="#9B1B30" opacity=".55"></circle>
+        <circle cx="760" cy="180" r="70" fill="#A52438" opacity=".45"></circle>
+        <circle cx="980" cy="840" r="80" fill="#8A1628" opacity=".5"></circle>
+        <circle cx="1420" cy="140" r="110" fill="#D8A25A" opacity=".25"></circle>
+      </g>
+      <g filter="url(#blurM)" opacity=".8">
+        <circle cx="880" cy="300" r="34" fill="url(#cherryDark)"></circle>
+        <circle cx="915" cy="322" r="30" fill="url(#cherryDark)"></circle>
+        <circle cx="1330" cy="760" r="40" fill="url(#cherryDark)"></circle>
+        <path d="M760 420 C820 380 900 380 950 430 C890 450 820 455 760 420 Z" fill="#2B4020"></path>
+        <path d="M1300 300 C1360 250 1420 260 1440 300 C1400 330 1340 330 1300 300 Z" fill="#2B4020"></path>
+      </g>
+
+      <g filter="url(#blurS)">
+        <path d="M1440 150 C1340 190 1240 230 1150 300 C1080 355 1030 400 990 470" stroke="#4A3524" stroke-width="12" stroke-linecap="round" fill="none"></path>
+        <path d="M1240 232 C1260 200 1300 170 1350 160" stroke="#4A3524" stroke-width="6" stroke-linecap="round" fill="none"></path>
+        <path d="M1150 300 C1210 250 1290 245 1330 270 C1280 310 1210 320 1150 300 Z" fill="url(#leaf)"></path>
+        <path d="M1060 370 C1030 300 1050 240 1100 215 C1115 275 1100 330 1060 370 Z" fill="url(#leaf)"></path>
+        <path d="M1240 232 C1230 170 1260 120 1310 105 C1310 160 1290 205 1240 232 Z" fill="url(#leaf)" opacity=".85"></path>
+      </g>
+
+      <g>
+        <path d="M1150 300 C1140 360 1120 420 1095 480" stroke="#5C4A2A" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+        <path d="M1150 300 C1165 365 1185 425 1200 490" stroke="#5C4A2A" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+        <path d="M1150 300 C1150 370 1150 440 1148 540" stroke="#5C4A2A" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+        <circle cx="1092" cy="520" r="46" fill="url(#cherry)"></circle>
+        <circle cx="1204" cy="530" r="48" fill="url(#cherry)"></circle>
+        <circle cx="1148" cy="584" r="50" fill="url(#cherry)"></circle>
+        <ellipse cx="1078" cy="502" rx="11" ry="7" fill="#FFFFFF" opacity=".45" transform="rotate(-30 1078 502)"></ellipse>
+        <ellipse cx="1190" cy="511" rx="12" ry="7" fill="#FFFFFF" opacity=".45" transform="rotate(-30 1190 511)"></ellipse>
+        <ellipse cx="1133" cy="564" rx="12" ry="8" fill="#FFFFFF" opacity=".5" transform="rotate(-30 1133 564)"></ellipse>
+
+        <path d="M1000 470 C1005 520 1000 580 990 640" stroke="#5C4A2A" stroke-width="3" fill="none" stroke-linecap="round"></path>
+        <path d="M1000 470 C1020 520 1040 570 1052 620" stroke="#5C4A2A" stroke-width="3" fill="none" stroke-linecap="round"></path>
+        <circle cx="988" cy="676" r="38" fill="url(#cherry)"></circle>
+        <circle cx="1058" cy="654" r="36" fill="url(#cherry)"></circle>
+        <ellipse cx="976" cy="661" rx="9" ry="6" fill="#FFFFFF" opacity=".42" transform="rotate(-30 976 661)"></ellipse>
+        <ellipse cx="1047" cy="640" rx="9" ry="5" fill="#FFFFFF" opacity=".42" transform="rotate(-30 1047 640)"></ellipse>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero__scrim" style="background: linear-gradient(90deg, rgba(14,11,10,0.9) 0%, rgba(14,11,10,0.56) 42%, rgba(14,11,10,0) 72%), linear-gradient(0deg, rgba(14,11,10,0.85) 0%, rgba(14,11,10,0) 38%), linear-gradient(180deg, rgba(14,11,10,0.55) 0%, rgba(14,11,10,0) 18%)"></div>
+
+      <div class="placeholder-tag" style="position: absolute; top: 112px; right: 64px; z-index: 2; padding: 8px 14px; border: 1px dashed rgba(244,237,228,0.5); border-radius: 6px; font-family: 'Onest', sans-serif; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #E6DDD2; background: rgba(14,11,10,0.55)">[ВИДЕО / СНИМКА ОТ ГРАДИНАТА]</div>
+  
+  <header class="nav fu">
+    <a href="#home" aria-label="ЗП Дилян Велев — начало" style="display: flex; align-items: center; gap: 14px; text-decoration: none">
+      <span style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(244,237,228,0.55); display: inline-flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #F4EDE4">ДВ</span>
+      <span style="display: flex; flex-direction: column; line-height: 1.15">
+        <span style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; color: #F4EDE4">ЗП Дилян Велев</span>
+        <span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #C9BFB3">Черешови градини</span>
+      </span>
+    </a>
+    <nav class="nav__links" aria-label="Основна навигация">
+      <a href="#about">За нас</a>
+      <a href="#varieties">Сортове</a>
+      <a href="#orchards">Градини</a>
+      <a href="#juice">Сок</a>
+      <a href="#contact">Контакти</a>
+    </nav>
+    <div class="nav__right">
+      <a class="nav__phone" href="tel:+359894600985" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 15px; color: #F4EDE4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+        0894 600 985
+      </a>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: 0.08em">
+        <a href="#" aria-current="true" style="text-decoration: none; color: #F4EDE4; font-weight: 600">БГ</a>
+        <span style="color: #8F857A" aria-hidden="true">/</span>
+        <a href="#" style="text-decoration: none; color: #B8AEA2">EN</a>
+      </div>
+      <button class="nav__menu" type="button" aria-label="Отвори менюто" style="width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(244,237,228,0.45); background: transparent; color: #F4EDE4; cursor: pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="body">
+    <div style="display: flex; flex-direction: column; gap: 30px; max-width: 760px">
+      <div class="fu d1" style="display: flex; align-items: center; gap: 14px; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #E6DDD2">
+        <span style="width: 40px; height: 1px; background: #E8697B" aria-hidden="true"></span>
+        Ракитница · Стара Загора
+      </div>
+      <h1 class="h1 fu d2">Череши от&#160;дървото,<br><em style="font-style: italic; color: #E8697B">без посредник.</em></h1>
+      <p class="fu d3" style="margin: 0; max-width: 520px; font-size: 18px; line-height: 1.6; color: #D6CCC0">Купувате директно от фермата — на кашон за търговци или на килограм за дома. Прясно прибрани всеки сезон.</p>
+      <div class="ctas fu d4">
+        <a class="btn" href="#availability" style="background: #A51E35; color: #FFFFFF">
+          Провери наличност
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a class="btn" href="#contact" style="border: 1px solid rgba(244,237,228,0.55); color: #F4EDE4; background: rgba(14,11,10,0.25)">Свържи се с нас</a>
+      </div>
+    </div>
+
+    <div class="fu d5" style="display: flex; flex-direction: column; gap: 18px; max-width: 460px; justify-self: end; width: 100%">
+      <div style="font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #C9BFB3">Стопанството с числа</div>
+      <dl class="stats" style="margin: 0">
+        <div class="stat">
+          <dt style="font-size: 13px; color: #C9BFB3; margin-bottom: 6px">Градини</dt>
+          <dd style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; font-weight: 500; color: #F4EDE4">4<span style="font-size: 24px; margin-left: 6px; color: #D6CCC0">ха</span></dd>
+        </div>
+        <div class="stat">
+          <dt style="font-size: 13px; color: #C9BFB3; margin-bottom: 6px">Реколта на сезон</dt>
+          <dd style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; font-weight: 500; color: #F4EDE4">30+<span style="font-size: 24px; margin-left: 6px; color: #D6CCC0">тона</span></dd>
+        </div>
+        <div class="stat">
+          <dt style="font-size: 13px; color: #C9BFB3; margin-bottom: 6px">Сорта</dt>
+          <dd style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; font-weight: 500; color: #F4EDE4">3</dd>
+        </div>
+        <div class="stat">
+          <dt style="font-size: 13px; color: #C9BFB3; margin-bottom: 6px">Сезон</dt>
+          <dd style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 40px; line-height: 1.3; font-weight: 500; color: #F4EDE4">май – юли</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <a class="cue fu d6" href="#about" aria-label="Превърти надолу" style="text-decoration: none; color: #C9BFB3; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase">
+    <span style="width: 1px; height: 28px; background: rgba(244,237,228,0.25); position: relative; overflow: hidden; display: block">
+      <span style="position: absolute; left: 0; top: 0; width: 1px; height: 14px; background: #F4EDE4; animation: cue 1.8s ease-in-out infinite; display: block"></span>
+    </span>
+  </a>
+</section>
+</body>
+</html>
