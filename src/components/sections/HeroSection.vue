@@ -324,6 +324,44 @@ function scrollTo(id: string) {
     }
 }
 
+// Phones: bring the photo and the label up under the headline so the first screen shows the product.
+// Only the visual order changes; the DOM (and tab order) stays headline → text → actions.
+@media (max-width: $bp-phone) {
+    .hero {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero__copy {
+        display: contents;
+    }
+
+    .hero__title {
+        order: 1;
+        padding: 28px $gutter-phone 0;
+    }
+
+    .hero__visual {
+        order: 2;
+        margin-top: 28px;
+    }
+
+    .hero__photo {
+        height: 78vw;
+    }
+
+    .hero__sub {
+        order: 3;
+        padding: 0 $gutter-phone;
+    }
+
+    .hero__actions {
+        order: 4;
+        margin-top: 22px;
+        padding: 0 $gutter-phone 40px;
+    }
+}
+
 // The crate label (CrateLabel.vue) — hangs across the seam between type panel and photo
 .hero__label {
     position: absolute;

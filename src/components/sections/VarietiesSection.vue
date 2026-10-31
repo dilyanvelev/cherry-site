@@ -2,8 +2,10 @@
 import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
 import CrateLabel from '@/components/CrateLabel.vue'
+import { useHarvestYear } from '@/composables/useHarvestYear'
 
-const { tr } = useLocale()
+const { tr, locale } = useLocale()
+const harvestYear = useHarvestYear()
 
 // Picking windows as fractions of the May 1 – July 31 axis, in the order of tr.varieties.items.
 // Read off the periods: late May – early June · June · late June – July.
@@ -31,6 +33,27 @@ const strings = WINDOWS.map(([start, end], i) => ({
   y1: MONTHS_H + AXIS_GAP + i * (TRACK_H + TRACK_GAP) + TRACK_H,
   x2: LABEL_X[i],
 }))
+
+// Live season state: where today sits on the May 1 – July 31 axis (0–1 = in season)
+const AXIS_DAYS = 92
+const DAY_MS = 86_400_000
+const now = new Date()
+const todayAt = (now.getTime() - new Date(now.getFullYear(), 4, 1).getTime()) / DAY_MS / AXIS_DAYS
+const inSeason = todayAt >= 0 && todayAt <= 1
+
+const status = computed(() => {
+  const s = tr.value.varieties.status
+  const fmt = (d: Date) => d.toLocaleDateString(locale.value === 'bg' ? 'bg-BG' : 'en-GB', { day: 'numeric', month: 'long' })
+  const orders = s.orders.replace('{year}', String(harvestYear.value))
+  if (inSeason) {
+    const picking = tr.value.varieties.items.filter((_, i) => todayAt >= WINDOWS[i][0] && todayAt <= WINDOWS[i][1]).map((item) => item.name)
+    const line = picking.length ? s.picking.replace('{names}', picking.join(', ')) : s.between
+    return { line: `${s.today}, ${fmt(now)} · ${line}`, orders }
+  }
+  const start = new Date(harvestYear.value, 4, 1 + Math.round(WINDOWS[0][0] * AXIS_DAYS))
+  const days = Math.ceil((start.getTime() - now.getTime()) / DAY_MS)
+  return { line: s.before.replace('{date}', fmt(start)).replace('{days}', String(days)), orders }
+})
 
 const labels = computed(() =>
   tr.value.varieties.items.map((item) => ({
@@ -66,9 +89,18 @@ function scrollTo(id: string) {
       <p class="varieties__intro">{{ tr.varieties.intro }}</p>
     </div>
 
+    <div :class="['season-status', { 'season-status--live': inSeason }]">
+      <span class="season-status__dot" aria-hidden="true"></span>
+      <p class="season-status__line">{{ status.line }}</p>
+      <p class="season-status__orders">{{ status.orders }}</p>
+    </div>
+
     <div class="season">
       <!-- Picking calendar; the same periods are in each label as text -->
       <div class="season__axis" aria-hidden="true">
+        <span v-if="inSeason" :class="['season__today', { 'season__today--flip': todayAt > 0.8 }]" :style="{ left: `${todayAt * 100}%` }">
+          <span>{{ tr.varieties.status.today }}</span>
+        </span>
         <div class="season__months">
           <span v-for="month in tr.varieties.months" :key="month">{{ month }}</span>
         </div>
@@ -204,6 +236,56 @@ $line: rgba(236, 238, 231, 0.28);
   }
 }
 
+
+// One line of real state above the calendar: days to the first picking, or what's being picked today
+.season-status {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 16px;
+  margin-bottom: -32px;
+  padding: 14px 18px;
+  border: 2px solid $varosano;
+  border-radius: $radius;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 10px minmax(0, 1fr);
+  }
+
+  @media (max-width: $bp-phone) {
+    margin-bottom: -16px;
+  }
+
+  &__dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid $varosano;
+  }
+
+  &--live &__dot {
+    background: $etiket;
+    box-shadow: 0 0 0 4px rgba(251, 251, 246, 0.25);
+  }
+
+  &__line {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  &__orders {
+    margin: 0;
+    @include mono-label;
+    font-size: 11px;
+
+    @media (max-width: 900px) {
+      grid-column: 2;
+    }
+  }
+}
+
 .season {
   position: relative;
 
@@ -259,6 +341,34 @@ $line: rgba(236, 238, 231, 0.28);
     font-size: 20px;
     line-height: 1;
     white-space: nowrap;
+  }
+
+  // Today's line across the calendar, in season only
+  &__today {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    border-left: 2px dashed $etiket;
+
+    // Just under the month row, so it never covers a month name
+    span {
+      position: absolute;
+      top: calc(var(--months-h) + 6px);
+      left: 6px;
+      padding: 3px 6px;
+      border-radius: $radius;
+      color: $bing;
+      background: $etiket;
+      white-space: nowrap;
+      @include mono-label;
+      font-size: 11px;
+    }
+
+    &--flip span {
+      left: auto;
+      right: 8px;
+    }
   }
 
   &__strings {
